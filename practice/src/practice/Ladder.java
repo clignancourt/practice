@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,42 +22,55 @@ public class Ladder {
 	
 	public static void main(String[] args) {
 		
-		// int[][] ladder = new int[5][12];
-		
 		// solve(n, answer);  // n은 계단수
 
 		// 열의 길이는 정해져 있음 (사다리 수=참가자) 5개 
 		int participants = 5;
 		
 		// 입력받은 계단 수 
-		int n = 12;
+		int inputLadders = 12;
 		
-		int[] steps = randomDiv(n, participants);
+		int[] steps = randomDiv(inputLadders, participants);
 		int[][] ladder = makeLadder(steps, participants);
 		
-		for(int i=0; i<ladder[0].length; i++) {
-			for(int j=0; j<ladder.length; j++) {
-				System.out.print(" ["+i+","+j+"] ");
-			}
-			System.out.println();
-		}
+//		for(int i=0; i<ladder[0].length; i++) {
+//			for(int j=0; j<ladder.length; j++) {
+//				System.out.print(" ["+i+","+j+"] ");
+//			}
+//			System.out.println();
+//		}
 		
-		randomSteps(ladder, steps);
-		
+		Map<Integer, Set<Integer>> map = randomSteps(ladder, steps);
+		System.out.println(map);
+		finalLadder(map, ladder);
 		
 	}
 	
 	
 
-	
+
+	private static void finalLadder(Map<Integer, Set<Integer>> map, int[][] ladder) {
+		for(Integer i : map.keySet()) { // 0, 1, 2, 3
+			//System.out.println(map.get(i));
+			Iterator<Integer> iter = map.get(i).iterator(); 
+			while(iter.hasNext()) {
+				System.out.println(i + ","+ iter.next());
+			}
+		}
+		
+	}
+
+
+
+
 	// 랜덤 사다리 만드는 메서드
-	private static void randomSteps(int[][] ladder, int[] steps) {
-		int x = ladder.length;
+	private static Map<Integer, Set<Integer>> randomSteps(int[][] ladder, int[] steps) {
 		int y = ladder[0].length;
 		
 		// 열 별로 랜덤으로 정해지는 계단의 위치를 저장할 리스트
 		Map<Integer, Set<Integer>> map = new HashMap<>();
 		
+		// ★ 이거 진짜 오래 걸린다
 		for(int i=0; i<steps.length; i++) {
 	
 			while(true) {
@@ -82,8 +96,7 @@ public class Ladder {
 			}
 			
 		}
-		System.out.println(map);
-		
+		return map;
 	}
 
 
